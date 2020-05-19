@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from "./services/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -9,13 +10,23 @@ import {AuthService} from "./services/auth.service";
 export class AppComponent implements OnInit {
   title = 'app';
 
-  constructor(private authService: AuthService) {
+  userName: string;
+
+  constructor(
+    private authService: AuthService,
+    private router: Router) {
   }
 
   ngOnInit() {
-    this.authService.login('admin', 'admin').subscribe(({ token, user }) => {
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
+    this.authService.userAuth$.subscribe(userName => {
+      console.log(userName);
+      this.userName = userName;
     });
+
+    this.authService.userAuth$.next(this.authService.getUserName());
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

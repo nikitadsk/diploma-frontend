@@ -1,0 +1,21 @@
+<div class="flex-row d-flex justify-content-center align-items-center content">
+  <div class="card">
+    <h5 class="card-header text-center">Добро пожаловать</h5>
+    <div class="card-body">
+      <h5 class="card-title">Добро пожаловать в ЦЕНТР УПРАВЛЕНИЯ ПРОПУСКАМИ</h5>
+      <ng-container *ngIf="isAuthorized">
+        <p class="card-text">
+          Это приложение позволит вам управлять расписанием и пропусками в учебном заведении.
+          Для продолжения выберите необходимый раздел в меню слева.
+        </p>
+      </ng-container>
+      <ng-container *ngIf="!isAuthorized">
+        <p class="card-text">
+          Это приложение позволит вам управлять расписанием и пропусками в учебном заведении.
+          Для продолжения авторизуйтесь.
+        </p>
+        <a class="btn btn-primary" routerLink="/login">Авторизоваться</a>
+      </ng-container>
+    </div>
+  </div>
+</div>
