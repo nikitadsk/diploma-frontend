@@ -1,0 +1,25 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th *ngFor="let headerName of headerNames">{{ headerName }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container
+      *ngFor="let content of contents | async"
+      [ngTemplateOutlet]="contentRow"
+      [ngTemplateOutletContext]="{ $implicit: content }"
+    >
+    </ng-container>
+  </tbody>
+</table>
+
+<ng-template #contentRow let-content>
+  <tr (click)="click(content)">
+    <ng-container *ngFor="let contentField of contentFields">
+      <td>
+        {{ getContentFromField(content, contentField) }}
+      </td>
+    </ng-container>
+  </tr>
+</ng-template>
