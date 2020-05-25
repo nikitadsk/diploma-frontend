@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthService} from "../services/auth.service";
+import {AuthService} from '../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -8,7 +8,7 @@ import {AuthService} from "../services/auth.service";
 })
 export class HomeComponent implements OnInit {
 
-  isAuthorized: boolean = false;
+  isAuthorized = false;
 
   constructor(
     private authService: AuthService
@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.authService.userAuth$.subscribe(userName => {
       this.isAuthorized = !!userName;
-    })
+    });
 
     this.authService.userAuth$.next(this.authService.getUserName());
   }

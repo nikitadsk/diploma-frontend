@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TeachersComponent } from './teachers.component';
-import {TeachersRoutingModule} from "./teachers-routing.module";
+import {TeachersRoutingModule} from './teachers-routing.module';
 
 
 

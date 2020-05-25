@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {environment} from "../../environments/environment";
-import {Observable, of, Subject} from "rxjs";
+import {HttpClient} from '@angular/common/http';
+import {environment} from '../../environments/environment';
+import {Observable, of, Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,7 @@ export class AuthService {
   }
 
   public getUserName(): string | undefined {
-    let result = undefined;
+    let result;
     const user = localStorage.getItem('user');
     if (user) {
       const { firstName, lastName } = JSON.parse(user);
