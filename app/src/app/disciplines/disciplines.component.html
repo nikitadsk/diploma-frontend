@@ -1,4 +1,36 @@
-<app-table [contents]="disciplines"
-           [headerNames]="headerNames"
-           [contentFields]="contentFields">
-</app-table>
+<div class="d-flex flex-column" style="margin: 20px">
+  <button class="btn btn-primary"
+          style="height: 40px; width: 140px; margin-bottom: 20px"
+          data-toggle="modal"
+          data-target="#addDialog">
+    <span>Добавить <i class="fa fa-plus"></i></span>
+  </button>
+
+  <app-table [contents]="disciplines"
+             [headerNames]="headerNames"
+             [addDeleting]="true"
+             [contentFields]="contentFields"
+             (contentDeleted)="deleteDiscipline($event)">
+  </app-table>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="addDialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Добавить дисциплину</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <label class="col-form-label" for="disciplineName">Наименование дисциплины</label>
+        <input #disciplineName class="form-control" id="disciplineName" required>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addDiscipline(disciplineName.value)">Добавить</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+      </div>
+    </div>
+  </div>
+</div>

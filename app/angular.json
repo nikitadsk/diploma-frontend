@@ -22,7 +22,7 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -30,14 +30,12 @@
             "styles": [
               "src/styles.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              {
+              {"inject":false,
                 "input": "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-                "lazy": true,
                 "bundleName": "fontawesome-all.min"
               },
-              {
+              {"inject":false,
                 "input": "node_modules/@fortawesome/fontawesome-free/css/v4-shims.min.css",
-                "lazy": true,
                 "bundleName": "fontawesome-v4-shims.min"
               }
             ],
@@ -60,7 +58,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,

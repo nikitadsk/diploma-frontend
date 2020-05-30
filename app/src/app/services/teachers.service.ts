@@ -13,7 +13,7 @@ export class TeachersService {
 
   constructor(private http: HttpClient) { }
 
-  public get(): Observable<ITeacher[]> {
+  public getAll(): Observable<ITeacher[]> {
     return this.http.get(this.url) as Observable<ITeacher[]>;
   }
 }

@@ -4,6 +4,9 @@
            (clickContent)="teacherClicked($event)">
 </app-table>
 
-<app-details-panel #detailspanel [(opened)]="sidebarOpened" [panelClass]="'EnKlassehar'">
+<ng-container *ngIf="selectedTeacher">
+  <app-details-panel #detailspanel [(opened)]="sidebarOpened" [panelClass]="'EnKlassehar'">
+    <app-teacher-details [teacher]="selectedTeacher"></app-teacher-details>
+  </app-details-panel>
+</ng-container>
 
-</app-details-panel>

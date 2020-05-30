@@ -11,11 +11,12 @@ import {DetailsPanelComponent} from "../shared/components/details-panel/details-
 })
 export class TeachersComponent implements OnInit, AfterViewInit {
 
-  @ViewChild(DetailsPanelComponent, {static: false}) detailsPanel: DetailsPanelComponent;
+  @ViewChild(DetailsPanelComponent) detailsPanel: DetailsPanelComponent;
 
   sidebarOpened: boolean = false;
 
   teachers: Observable<ITeacher[]>;
+  selectedTeacher: ITeacher;
 
   headerNames: string[] = [
     'Фамилия',
@@ -32,7 +33,7 @@ export class TeachersComponent implements OnInit, AfterViewInit {
   constructor(private teachersService: TeachersService) { }
 
   ngOnInit() {
-    this.teachers = this.teachersService.get();
+    this.teachers = this.teachersService.getAll();
   }
 
   ngAfterViewInit(): void {
@@ -40,15 +41,15 @@ export class TeachersComponent implements OnInit, AfterViewInit {
       this.detailsPanel.openedChange.subscribe(opened => {
         this.sidebarOpened = opened;
         if (!opened) {
-
+          this.selectedTeacher = null;
         }
       });
     }
   }
 
   teacherClicked(teacher: ITeacher) {
+    this.selectedTeacher = teacher;
     this.sidebarOpened = true;
-    console.log(teacher);
   }
 
 }

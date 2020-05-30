@@ -1,4 +1,4 @@
 export interface IDiscipline {
-  _id: string;
+  _id?: string;
   disciplineName: string;
 }

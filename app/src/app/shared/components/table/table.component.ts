@@ -12,8 +12,12 @@ export class TableComponent implements OnInit {
   @Input() headerNames: string[];
   @Input() contents: Observable<any>;
   @Input() contentFields: string[] = [];
+  @Input() addDeleting: boolean = false;
 
   @Output() clickContent: EventEmitter<any> = new EventEmitter<any>();
+  @Output() contentDeleted: EventEmitter<any> = new EventEmitter<any>();
+
+  markedContent;
 
   constructor() { }
 
@@ -32,6 +36,14 @@ export class TableComponent implements OnInit {
 
   click(content) {
     this.clickContent.emit(content);
+  }
+
+  clickDelete() {
+    this.contentDeleted.emit(this.markedContent);
+  }
+
+  markContent(content) {
+    this.markedContent = content;
   }
 
 }

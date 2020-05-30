@@ -1,5 +1,5 @@
 export interface IGroup {
-  _id: string;
+  _id?: string;
   groupNumber: number;
   specialtyId: string;
   curatorId: string;

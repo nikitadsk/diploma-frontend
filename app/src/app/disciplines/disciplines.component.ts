@@ -25,7 +25,22 @@ export class DisciplinesComponent implements OnInit {
   constructor(private disciplinesService: DisciplinesService) { }
 
   ngOnInit() {
-    this.disciplines = this.disciplinesService.get();
+    this.disciplines = this.disciplinesService.getAll();
+  }
+
+  addDiscipline(disciplineName: string) {
+    const subscription = this.disciplinesService.create({ disciplineName }).subscribe(() => {
+      this.disciplines = this.disciplinesService.getAll();
+      subscription.unsubscribe();
+    });
+  }
+
+  deleteDiscipline(discipline: IDiscipline) {
+    console.log(discipline);
+    const subscription = this.disciplinesService.delete(discipline._id).subscribe(() => {
+      this.disciplines = this.disciplinesService.getAll();
+      subscription.unsubscribe();
+    });
   }
 
 }
