@@ -29,7 +29,17 @@
             ],
             "styles": [
               "src/styles.scss",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css"
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              {
+                "input": "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+                "lazy": true,
+                "bundleName": "fontawesome-all.min"
+              },
+              {
+                "input": "node_modules/@fortawesome/fontawesome-free/css/v4-shims.min.css",
+                "lazy": true,
+                "bundleName": "fontawesome-v4-shims.min"
+              }
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
@@ -98,7 +108,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/font-awesome/css/font-awesome.min.css"
             ],
             "scripts": []
           }

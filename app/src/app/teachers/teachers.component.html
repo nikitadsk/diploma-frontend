@@ -1,1 +1,9 @@
-<p>teachers works!</p>
+<app-table [contents]="teachers"
+           [headerNames]="headerNames"
+           [contentFields]="contentFields"
+           (clickContent)="teacherClicked($event)">
+</app-table>
+
+<app-details-panel #detailspanel [(opened)]="sidebarOpened" [panelClass]="'EnKlassehar'">
+
+</app-details-panel>

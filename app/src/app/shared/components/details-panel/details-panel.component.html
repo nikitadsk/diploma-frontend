@@ -1,0 +1,18 @@
+<div
+  #detailspanel
+  [attr.aria-hidden]="!opened"
+  [ngClass]="panelClass"
+  class="detailspanel panel-{{opened? 'opened' : 'closed'}}">
+
+  <div class="detailspanel-main" [style.width]="panelWidth">
+    <div class="detailspanel-actions">
+      <div class="dummy"></div>
+      <button (click)="close()" class="btn">
+        <i class="fa fa-close"></i>
+      </button>
+    </div>
+    <div class="detailspanel-main-content">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

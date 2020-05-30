@@ -15,7 +15,7 @@
 </table>
 
 <ng-template #contentRow let-content>
-  <tr (click)="click(content)">
+  <tr (click)="click(content)" style="cursor: pointer;">
     <ng-container *ngFor="let contentField of contentFields">
       <td>
         {{ getContentFromField(content, contentField) }}

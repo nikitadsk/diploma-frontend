@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from './services/auth.service';
-import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -13,13 +12,11 @@ export class AppComponent implements OnInit {
   userName: string;
 
   constructor(
-    private authService: AuthService,
-    private router: Router) {
+    private authService: AuthService) {
   }
 
   ngOnInit() {
     this.authService.userAuth$.subscribe(userName => {
-      console.log(userName);
       this.userName = userName;
     });
 
