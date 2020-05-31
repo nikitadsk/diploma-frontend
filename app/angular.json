@@ -30,11 +30,14 @@
             "styles": [
               "src/styles.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              {"inject":false,
+              "node_modules/ngx-toastr/toastr.css",
+              {
+                "inject":false,
                 "input": "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
                 "bundleName": "fontawesome-all.min"
               },
-              {"inject":false,
+              {
+                "inject":false,
                 "input": "node_modules/@fortawesome/fontawesome-free/css/v4-shims.min.css",
                 "bundleName": "fontawesome-v4-shims.min"
               }
