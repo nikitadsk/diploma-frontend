@@ -5,4 +5,6 @@ export interface IGroup {
   curatorId?: string;
   headmanId?: string;
   disciplineIds: string[];
+  specialtyName?: string;
+  curatorName?: string;
 }
