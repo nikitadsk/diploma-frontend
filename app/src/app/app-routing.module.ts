@@ -16,6 +16,10 @@ const routes: Routes = [
     loadChildren: () => import('./disciplines/disciplines.module').then(m => m.DisciplinesModule)
   },
   {
+    path: 'specialty',
+    loadChildren: () => import('./specialty/specialty.module').then(m => m.SpecialtyModule)
+  },
+  {
     path: 'groups',
     loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)
   },

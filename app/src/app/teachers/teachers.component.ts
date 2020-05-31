@@ -1,8 +1,11 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {TeachersService} from "../services/teachers.service";
-import {Observable} from "rxjs";
-import {ITeacher} from "../models/teacher";
-import {DetailsPanelComponent} from "../shared/components/details-panel/details-panel.component";
+import {TeachersService} from '../services/teachers.service';
+import {Observable} from 'rxjs';
+import {ITeacher} from '../models/teacher';
+import {DetailsPanelComponent} from '../shared/components/details-panel/details-panel.component';
+import {FormBuilder, Validators} from '@angular/forms';
+import {DisciplinesService} from '../services/disciplines.service';
+import {IDiscipline} from '../models/discipline';
 
 @Component({
   selector: 'app-teachers',
@@ -13,10 +16,12 @@ export class TeachersComponent implements OnInit, AfterViewInit {
 
   @ViewChild(DetailsPanelComponent) detailsPanel: DetailsPanelComponent;
 
-  sidebarOpened: boolean = false;
+  sidebarOpened = false;
 
   teachers: Observable<ITeacher[]>;
   selectedTeacher: ITeacher;
+
+  allDisciplines: Observable<IDiscipline[]>;
 
   headerNames: string[] = [
     'Фамилия',
@@ -28,9 +33,27 @@ export class TeachersComponent implements OnInit, AfterViewInit {
     'lastName',
     'firstName',
     'patronym'
-  ]
+  ];
 
-  constructor(private teachersService: TeachersService) { }
+  teacherForm = this.fb.group({
+    firstName: ['', Validators.required],
+    lastName: ['', Validators.required],
+    patronym: ['', Validators.required],
+    disciplineIds: ['', Validators.required]
+  });
+
+  config = {
+    displayKey: 'disciplineName',
+    search: true,
+    limitTo: 3,
+    selectedItems: [],
+  };
+
+  constructor(
+    private teachersService: TeachersService,
+    private disciplinesService: DisciplinesService,
+    private fb: FormBuilder
+  ) { }
 
   ngOnInit() {
     this.teachers = this.teachersService.getAll();
@@ -50,6 +73,23 @@ export class TeachersComponent implements OnInit, AfterViewInit {
   teacherClicked(teacher: ITeacher) {
     this.selectedTeacher = teacher;
     this.sidebarOpened = true;
+  }
+
+  openAddDialog() {
+    this.allDisciplines = this.disciplinesService.getAll();
+  }
+
+  addTeacher() {
+    if (this.teacherForm.valid) {
+      const teacher = this.teacherForm.value;
+      teacher.disciplineIds = teacher.disciplineIds.map(discipline => discipline._id);
+      const subscription = this.teachersService.create(teacher).subscribe(() => {
+        this.teachers = this.teachersService.getAll();
+        this.teacherForm.reset({ disciplineIds: [] });
+        subscription.unsubscribe();
+      });
+    }
+
   }
 
 }

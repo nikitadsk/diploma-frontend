@@ -28,8 +28,8 @@
         <input #disciplineName class="form-control" id="disciplineName" required>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addDiscipline(disciplineName.value)">Добавить</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addDiscipline(disciplineName.value); disciplineName.value = '';">Добавить</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="disciplineName.value = '';">Отменить</button>
       </div>
     </div>
   </div>

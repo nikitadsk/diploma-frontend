@@ -1,12 +1,57 @@
-<app-table [contents]="teachers"
-           [headerNames]="headerNames"
-           [contentFields]="contentFields"
-           (clickContent)="teacherClicked($event)">
-</app-table>
+<div class="d-flex flex-column" style="margin: 20px;">
+  <button class="btn btn-primary"
+          style="height: 40px; width: 140px; margin-bottom: 20px"
+          data-toggle="modal"
+          data-target="#addDialog"
+          (click)="openAddDialog()">
+    <span>Добавить <i class="fa fa-plus"></i></span>
+  </button>
 
-<ng-container *ngIf="selectedTeacher">
-  <app-details-panel #detailspanel [(opened)]="sidebarOpened" [panelClass]="'EnKlassehar'">
-    <app-teacher-details [teacher]="selectedTeacher"></app-teacher-details>
-  </app-details-panel>
-</ng-container>
+  <app-table [contents]="teachers"
+             [headerNames]="headerNames"
+             [contentFields]="contentFields"
+             (clickContent)="teacherClicked($event)">
+  </app-table>
 
+  <ng-container *ngIf="selectedTeacher">
+    <app-details-panel #detailspanel [(opened)]="sidebarOpened" [panelClass]="'EnKlassehar'">
+      <app-teacher-details [teacher]="selectedTeacher"></app-teacher-details>
+    </app-details-panel>
+  </ng-container>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="addDialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Добавить дисциплину</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="form-group" [formGroup]="teacherForm">
+          <div class="row" style="margin-bottom: 20px;">
+            <div class="col">
+              <label class="col-form-label" for="lastName">Фамилия</label>
+              <input class="form-control" id="lastName" formControlName="lastName">
+            </div>
+            <div class="col">
+              <label class="col-form-label" for="firstName">Имя</label>
+              <input class="form-control" id="firstName" formControlName="firstName">
+            </div>
+            <div class="col">
+              <label class="col-form-label" for="patronym">Отчество</label>
+              <input class="form-control" id="patronym" formControlName="patronym">
+            </div>
+          </div>
+          <ngx-select-dropdown [options]="allDisciplines | async" [config]="config" [multiple]="true" formControlName="disciplineIds"></ngx-select-dropdown>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addTeacher()">Добавить</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+      </div>
+    </div>
+  </div>
+</div>
