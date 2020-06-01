@@ -3,5 +3,7 @@ export interface ITeacher {
   firstName: string;
   lastName: string;
   patronym: string;
+  name?: string;
   disciplineIds: string[];
+  isCurator?: boolean;
 }

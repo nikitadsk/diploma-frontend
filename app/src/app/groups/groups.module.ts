@@ -4,6 +4,7 @@ import { GroupsComponent } from './groups.component';
 import {GroupsRoutingModule} from './groups-routing.module';
 import {SharedModule} from '../shared/shared.module';
 import {ReactiveFormsModule} from '@angular/forms';
+import {SelectDropDownModule} from 'ngx-select-dropdown';
 
 
 
@@ -13,7 +14,8 @@ import {ReactiveFormsModule} from '@angular/forms';
         CommonModule,
         GroupsRoutingModule,
         SharedModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        SelectDropDownModule
     ]
 })
 export class GroupsModule { }

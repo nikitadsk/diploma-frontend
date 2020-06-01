@@ -1,5 +1,8 @@
 <h2>{{ teacher.lastName }} {{ teacher.firstName }} {{ teacher.patronym }}</h2>
 
+<ng-container *ngIf="teacher.isCurator && supervisedGroup">
+  <span class="badge badge-danger" style="margin-right: 10px; font-size: 15px;">Куратор группы: {{ supervisedGroup.specialtyName }}-{{ supervisedGroup.groupNumber }}</span>
+</ng-container>
 <ng-container *ngFor="let discipline of teacherDisciplines | async">
   <span class="badge badge-primary" style="margin-right: 10px; font-size: 15px;">{{ discipline.disciplineName }}</span>
 </ng-container>

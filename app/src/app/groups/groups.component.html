@@ -2,7 +2,8 @@
   <button class="btn btn-primary"
           style="height: 40px; width: 140px; margin-bottom: 20px"
           data-toggle="modal"
-          data-target="#addDialog">
+          data-target="#addDialog"
+          (click)="openAddDialog()">
     <span>Добавить <i class="fa fa-plus"></i></span>
   </button>
 
@@ -23,11 +24,17 @@
       </div>
       <div class="modal-body">
         <form [formGroup]="groupForm">
-          <label class="col-form-label" for="specialtyName">Наименование специальности</label>
-          <input class="form-control" id="specialtyName">
+          <label class="col-form-label" for="groupNumber">Номер группы</label>
+          <input class="form-control" id="groupNumber" formControlName="groupNumber">
 
-          <label class="col-form-label" for="specialtyCode">Код специальности</label>
-          <input class="form-control" id="specialtyCode">
+          <label class="col-form-label" for="specialtyId">Специальность</label>
+          <ngx-select-dropdown [options]="allSpecialty" [config]="specialtyConfig" [multiple]="false" formControlName="specialtyId" id="specialtyId"></ngx-select-dropdown>
+
+          <label class="col-form-label" for="curatorId">Куратор</label>
+          <ngx-select-dropdown [options]="allAvailableTeachers" [config]="teacherConfig" [multiple]="false" formControlName="curatorId" id="curatorId"></ngx-select-dropdown>
+
+          <label class="col-form-label" for="disciplineIds">Дисциплины</label>
+          <ngx-select-dropdown [options]="allDisciplines" [config]="disciplineConfig" [multiple]="true" formControlName="disciplineIds" id="disciplineIds"></ngx-select-dropdown>
         </form>
       </div>
       <div class="modal-footer">

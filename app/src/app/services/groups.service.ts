@@ -18,4 +18,8 @@ export class GroupsService {
   public getAll(): Observable<IGroup[]> {
     return this.http.get(this.url) as Observable<IGroup[]>;
   }
+
+  public getByCuratorId(curatorId: string): Observable<IGroup> {
+    return this.http.get(this.url + '/by-curator-id/' + curatorId) as Observable<IGroup>;
+  }
 }

@@ -4,4 +4,5 @@ export interface IStudent {
   lastName: string;
   patronym: string;
   groupId: string;
+  isHeadman?: boolean;
 }
