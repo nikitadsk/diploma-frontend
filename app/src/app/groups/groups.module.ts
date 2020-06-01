@@ -5,17 +5,20 @@ import {GroupsRoutingModule} from './groups-routing.module';
 import {SharedModule} from '../shared/shared.module';
 import {ReactiveFormsModule} from '@angular/forms';
 import {SelectDropDownModule} from 'ngx-select-dropdown';
+import { GroupDetailsComponent } from './group-details/group-details.component';
+import {NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 
 
 
 @NgModule({
-  declarations: [GroupsComponent],
-    imports: [
-        CommonModule,
-        GroupsRoutingModule,
-        SharedModule,
-        ReactiveFormsModule,
-        SelectDropDownModule
-    ]
+  declarations: [GroupsComponent, GroupDetailsComponent],
+  imports: [
+    CommonModule,
+    GroupsRoutingModule,
+    SharedModule,
+    ReactiveFormsModule,
+    SelectDropDownModule,
+    NgbNavModule
+  ]
 })
 export class GroupsModule { }

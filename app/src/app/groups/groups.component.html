@@ -9,9 +9,16 @@
 
   <app-table [contents]="groups"
              [headerNames]="headerNames"
-             [contentFields]="contentFields">
+             [contentFields]="contentFields"
+             (clickContent)="openGroupDetails($event)">
   </app-table>
 </div>
+
+<ng-container *ngIf="selectedGroup">
+  <app-details-panel [(opened)]="sidebarOpened" [panelClass]="'EnKlassehar'">
+    <app-group-details [group]="selectedGroup"></app-group-details>
+  </app-details-panel>
+</ng-container>
 
 <div class="modal" tabindex="-1" role="dialog" id="addDialog">
   <div class="modal-dialog" role="document">

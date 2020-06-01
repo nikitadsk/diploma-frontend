@@ -1,0 +1,60 @@
+<div class="d-flex flex-column">
+  <h2 class="d-flex">
+    <span>Группа: {{group.specialtyName}}-{{group.groupNumber}}</span>
+    <i class="fa fa-pen align-self-center" style="margin-left: 20px; font-size: 15px; cursor: pointer;"></i>
+  </h2>
+  <ul ngbNav #nav="ngbNav" class="nav-tabs" style="margin-top: 20px;">
+    <li [ngbNavItem]="1">
+      <a ngbNavLink>Общее</a>
+      <ng-template ngbNavContent>
+        <div class="row" style="margin: 20px -15px;">
+          <div class="col">
+            <span><b>Специальность</b></span><br>
+            <span>{{ group.specialtyName }}</span>
+          </div>
+          <div class="col">
+            <span><b>Номер группы</b></span><br>
+            <span>{{ group.groupNumber }}</span>
+          </div>
+        </div>
+
+        <div class="row" style="margin: 20px -15px;">
+          <div class="col">
+            <span><b>Куратор</b></span><br>
+            <span>{{ group.curatorName }}</span>
+          </div>
+          <div class="col">
+            <span><b>Староста</b></span><br>
+            <ng-container *ngIf="group.headmanName">
+              <span>{{ group.headmanName }}</span>
+            </ng-container>
+            <ng-container *ngIf="!group.headmanName">
+              <span style="color: red;">Староста группы не выбран</span>
+            </ng-container>
+          </div>
+        </div>
+
+        <ng-container *ngIf="disciplines">
+          <span><b>Дисциплины</b></span><br>
+          <ng-container *ngFor="let discipline of disciplines | async">
+            <span class="badge badge-primary" style="margin-right: 10px; font-size: 15px;">{{ discipline.disciplineName }}</span>
+          </ng-container>
+        </ng-container>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="2">
+      <a ngbNavLink>Учащиеся</a>
+      <ng-template ngbNavContent>
+        2
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="3">
+      <a ngbNavLink>Расписание</a>
+      <ng-template ngbNavContent>
+        3
+      </ng-template>
+    </li>
+  </ul>
+
+  <div [ngbNavOutlet]="nav" class="mt-2"></div>
+</div>

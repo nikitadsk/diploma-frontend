@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {GroupsService} from '../services/groups.service';
 import {FormBuilder, Validators} from '@angular/forms';
 import {forkJoin, Observable} from 'rxjs';
@@ -9,15 +9,19 @@ import {IDiscipline} from '../models/discipline';
 import {TeachersService} from '../services/teachers.service';
 import {SpecialtyService} from '../services/specialty.service';
 import {DisciplinesService} from '../services/disciplines.service';
+import {DetailsPanelComponent} from '../shared/components/details-panel/details-panel.component';
 
 @Component({
   selector: 'app-groups',
   templateUrl: './groups.component.html',
   styleUrls: ['./groups.component.scss']
 })
-export class GroupsComponent implements OnInit {
+export class GroupsComponent implements OnInit, AfterViewInit {
+
+  @ViewChild(DetailsPanelComponent) detailsPanel: DetailsPanelComponent;
 
   groups: Observable<IGroup[]>;
+  selectedGroup: IGroup;
 
   headerNames: string[] = [
     'Номер группы',
@@ -72,6 +76,8 @@ export class GroupsComponent implements OnInit {
     placeholder: 'Выберите'
   };
 
+  sidebarOpened = false;
+
   constructor(
     private groupsService: GroupsService,
     private teachersService: TeachersService,
@@ -82,6 +88,17 @@ export class GroupsComponent implements OnInit {
 
   ngOnInit() {
     this.groups = this.groupsService.getAll();
+  }
+
+  ngAfterViewInit(): void {
+    if (this.detailsPanel) {
+      this.detailsPanel.openedChange.subscribe(opened => {
+        this.sidebarOpened = opened;
+        if (!opened) {
+          this.selectedGroup = null;
+        }
+      });
+    }
   }
 
   openAddDialog() {
@@ -111,6 +128,12 @@ export class GroupsComponent implements OnInit {
         subscription.unsubscribe();
       });
     }
+  }
+
+  openGroupDetails(group) {
+    this.selectedGroup = group;
+    this.sidebarOpened = true;
+    console.log(group);
   }
 
 }
