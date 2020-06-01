@@ -38,8 +38,8 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Добавить</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addGroup()">Добавить</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="groupForm.reset({ disciplineIds: [] });">Отменить</button>
       </div>
     </div>
   </div>

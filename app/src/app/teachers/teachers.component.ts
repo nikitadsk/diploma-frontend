@@ -47,6 +47,9 @@ export class TeachersComponent implements OnInit, AfterViewInit {
     search: true,
     limitTo: 3,
     selectedItems: [],
+    searchPlaceholder: 'Поиск',
+    noResultsFound: 'Не найдено результатов',
+    placeholder: 'Выберите'
   };
 
   constructor(

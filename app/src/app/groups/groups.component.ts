@@ -39,7 +39,6 @@ export class GroupsComponent implements OnInit {
     groupNumber: ['', Validators.required],
     specialtyId: ['', Validators.required],
     curatorId: ['', Validators.required],
-    headmanId: [''],
     disciplineIds: ['', Validators.required]
   });
 
@@ -48,6 +47,9 @@ export class GroupsComponent implements OnInit {
     search: true,
     limitTo: 3,
     selectedItems: [],
+    searchPlaceholder: 'Поиск',
+    noResultsFound: 'Не найдено результатов',
+    placeholder: 'Выберите'
   };
 
   specialtyConfig = {
@@ -55,6 +57,9 @@ export class GroupsComponent implements OnInit {
     search: true,
     limitTo: 3,
     selectedItems: [],
+    searchPlaceholder: 'Поиск',
+    noResultsFound: 'Не найдено результатов',
+    placeholder: 'Выберите'
   };
 
   teacherConfig = {
@@ -62,6 +67,9 @@ export class GroupsComponent implements OnInit {
     search: true,
     limitTo: 3,
     selectedItems: [],
+    searchPlaceholder: 'Поиск',
+    noResultsFound: 'Не найдено результатов',
+    placeholder: 'Выберите'
   };
 
   constructor(
@@ -89,6 +97,20 @@ export class GroupsComponent implements OnInit {
       this.allSpecialty = data.specialty;
       subscription.unsubscribe();
     });
+  }
+
+  addGroup() {
+    if (this.groupForm.valid) {
+      const group = this.groupForm.value;
+      group.curatorId = group.curatorId._id;
+      group.specialtyId = group.specialtyId._id;
+      group.disciplineIds = group.disciplineIds.map(discipline => discipline._id);
+      const subscription = this.groupsService.create(group).subscribe(() => {
+        this.groups = this.groupsService.getAll();
+        this.groupForm.reset({ disciplineIds: [] });
+        subscription.unsubscribe();
+      });
+    }
   }
 
 }

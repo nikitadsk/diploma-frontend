@@ -31,7 +31,7 @@ const routes: Routes = [
     path: 'skippings',
     loadChildren: () => import('./skippings/skippings.module').then(m => m.SkippingsModule)
   },
-  { path: '', redirectTo: 'home', pathMatch: 'full' }
+  { path: '**', redirectTo: 'home', pathMatch: 'full' }
 ];
 
 @NgModule({

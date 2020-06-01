@@ -22,4 +22,8 @@ export class GroupsService {
   public getByCuratorId(curatorId: string): Observable<IGroup> {
     return this.http.get(this.url + '/by-curator-id/' + curatorId) as Observable<IGroup>;
   }
+
+  public create(group: IGroup) {
+    return this.http.post(this.url, group);
+  }
 }
