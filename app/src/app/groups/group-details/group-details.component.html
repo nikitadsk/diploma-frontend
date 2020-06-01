@@ -45,7 +45,13 @@
     <li [ngbNavItem]="2">
       <a ngbNavLink>Учащиеся</a>
       <ng-template ngbNavContent>
-        2
+        <button class="btn btn-primary"
+                style="margin: 10px 0"
+                data-toggle="modal"
+                data-target="#addStudent">
+          <span>Добавить <i class="fa fa-plus"></i></span>
+        </button>
+        <app-table [contents]="students" [contentFields]="studentContentFields" [headerNames]="studentsHeaderNames"></app-table>
       </ng-template>
     </li>
     <li [ngbNavItem]="3">
@@ -57,4 +63,31 @@
   </ul>
 
   <div [ngbNavOutlet]="nav" class="mt-2"></div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="addStudent">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Добавить студента</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="studentForm">
+          <label class="col-form-label" for="lastName">Фамилия</label>
+          <input class="form-control" id="lastName" formControlName="lastName">
+          <label class="col-form-label" for="firstName">Имя</label>
+          <input class="form-control" id="firstName" formControlName="firstName">
+          <label class="col-form-label" for="patronym">Отчество</label>
+          <input class="form-control" id="patronym" formControlName="patronym">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addStudent()">Добавить</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="studentForm.reset();">Отменить</button>
+      </div>
+    </div>
+  </div>
 </div>
