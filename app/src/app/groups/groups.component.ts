@@ -133,7 +133,6 @@ export class GroupsComponent implements OnInit, AfterViewInit {
   openGroupDetails(group) {
     this.selectedGroup = group;
     this.sidebarOpened = true;
-    console.log(group);
   }
 
 }

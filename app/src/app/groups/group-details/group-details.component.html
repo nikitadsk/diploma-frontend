@@ -1,93 +1,134 @@
-<div class="d-flex flex-column">
-  <h2 class="d-flex">
-    <span>Группа: {{group.specialtyName}}-{{group.groupNumber}}</span>
-    <i class="fa fa-pen align-self-center" style="margin-left: 20px; font-size: 15px; cursor: pointer;"></i>
-  </h2>
-  <ul ngbNav #nav="ngbNav" class="nav-tabs" style="margin-top: 20px;">
-    <li [ngbNavItem]="1">
-      <a ngbNavLink>Общее</a>
-      <ng-template ngbNavContent>
-        <div class="row" style="margin: 20px -15px;">
-          <div class="col">
-            <span><b>Специальность</b></span><br>
-            <span>{{ group.specialtyName }}</span>
+<ng-container *ngIf="group">
+  <div class="d-flex flex-column">
+    <h2 class="d-flex">
+      <span>Группа: {{group.specialtyName}}-{{group.groupNumber}}</span>
+      <i class="fa fa-pen align-self-center"
+         style="margin-left: 20px; font-size: 15px; cursor: pointer;"
+         data-toggle="modal"
+         data-target="#editDialog"
+         (click)="clickEditGroup()"></i>
+    </h2>
+    <ul ngbNav #nav="ngbNav" class="nav-tabs" style="margin-top: 20px;">
+      <li [ngbNavItem]="1">
+        <a ngbNavLink>Общее</a>
+        <ng-template ngbNavContent>
+          <div class="row" style="margin: 20px -15px;">
+            <div class="col">
+              <span><b>Специальность</b></span><br>
+              <span>{{ group.specialtyName }}</span>
+            </div>
+            <div class="col">
+              <span><b>Номер группы</b></span><br>
+              <span>{{ group.groupNumber }}</span>
+            </div>
           </div>
-          <div class="col">
-            <span><b>Номер группы</b></span><br>
-            <span>{{ group.groupNumber }}</span>
-          </div>
-        </div>
 
-        <div class="row" style="margin: 20px -15px;">
-          <div class="col">
-            <span><b>Куратор</b></span><br>
-            <span>{{ group.curatorName }}</span>
+          <div class="row" style="margin: 20px -15px;">
+            <div class="col">
+              <span><b>Куратор</b></span><br>
+              <span>{{ group.curatorName }}</span>
+            </div>
+            <div class="col">
+              <span><b>Староста</b></span><br>
+              <ng-container *ngIf="group.headmanName">
+                <span>{{ group.headmanName }}</span>
+              </ng-container>
+              <ng-container *ngIf="!group.headmanName">
+                <span style="color: red;">Староста группы не выбран</span>
+              </ng-container>
+            </div>
           </div>
-          <div class="col">
-            <span><b>Староста</b></span><br>
-            <ng-container *ngIf="group.headmanName">
-              <span>{{ group.headmanName }}</span>
-            </ng-container>
-            <ng-container *ngIf="!group.headmanName">
-              <span style="color: red;">Староста группы не выбран</span>
-            </ng-container>
-          </div>
-        </div>
 
-        <ng-container *ngIf="disciplines">
-          <span><b>Дисциплины</b></span><br>
-          <ng-container *ngFor="let discipline of disciplines | async">
-            <span class="badge badge-primary" style="margin-right: 10px; font-size: 15px;">{{ discipline.disciplineName }}</span>
+          <ng-container *ngIf="disciplines">
+            <span><b>Дисциплины</b></span><br>
+            <ng-container *ngFor="let discipline of disciplines">
+              <span class="badge badge-primary" style="margin-right: 10px; font-size: 15px;">{{ discipline.disciplineName }}</span>
+            </ng-container>
           </ng-container>
-        </ng-container>
-      </ng-template>
-    </li>
-    <li [ngbNavItem]="2">
-      <a ngbNavLink>Учащиеся</a>
-      <ng-template ngbNavContent>
-        <button class="btn btn-primary"
-                style="margin: 10px 0"
-                data-toggle="modal"
-                data-target="#addStudent">
-          <span>Добавить <i class="fa fa-plus"></i></span>
-        </button>
-        <app-table [contents]="students" [contentFields]="studentContentFields" [headerNames]="studentsHeaderNames"></app-table>
-      </ng-template>
-    </li>
-    <li [ngbNavItem]="3">
-      <a ngbNavLink>Расписание</a>
-      <ng-template ngbNavContent>
-        3
-      </ng-template>
-    </li>
-  </ul>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="2">
+        <a ngbNavLink>Учащиеся</a>
+        <ng-template ngbNavContent>
+          <button class="btn btn-primary"
+                  style="margin: 10px 0"
+                  data-toggle="modal"
+                  data-target="#addStudent">
+            <span>Добавить <i class="fa fa-plus"></i></span>
+          </button>
+          <app-table [contents]="toObservable(students)" [contentFields]="studentContentFields" [headerNames]="studentsHeaderNames"></app-table>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="3">
+        <a ngbNavLink>Расписание</a>
+        <ng-template ngbNavContent>
+          3
+        </ng-template>
+      </li>
+    </ul>
 
-  <div [ngbNavOutlet]="nav" class="mt-2"></div>
-</div>
+    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+  </div>
 
-<div class="modal" tabindex="-1" role="dialog" id="addStudent">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Добавить студента</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form [formGroup]="studentForm">
-          <label class="col-form-label" for="lastName">Фамилия</label>
-          <input class="form-control" id="lastName" formControlName="lastName">
-          <label class="col-form-label" for="firstName">Имя</label>
-          <input class="form-control" id="firstName" formControlName="firstName">
-          <label class="col-form-label" for="patronym">Отчество</label>
-          <input class="form-control" id="patronym" formControlName="patronym">
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addStudent()">Добавить</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="studentForm.reset();">Отменить</button>
+  <div class="modal" tabindex="-1" role="dialog" id="addStudent">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Добавить студента</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="studentForm">
+            <label class="col-form-label" for="lastName">Фамилия</label>
+            <input class="form-control" id="lastName" formControlName="lastName">
+            <label class="col-form-label" for="firstName">Имя</label>
+            <input class="form-control" id="firstName" formControlName="firstName">
+            <label class="col-form-label" for="patronym">Отчество</label>
+            <input class="form-control" id="patronym" formControlName="patronym">
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addStudent()">Добавить</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="studentForm.reset();">Отменить</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+
+  <div class="modal" tabindex="-1" role="dialog" id="editDialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Добавить группу</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="groupForm">
+            <label class="col-form-label" for="groupNumber">Номер группы</label>
+            <input class="form-control" id="groupNumber" formControlName="groupNumber">
+
+            <label class="col-form-label" for="specialtyName">Специальность</label>
+            <input class="form-control" formControlName="specialtyName" id="specialtyName">
+
+            <label class="col-form-label" for="curatorName">Куратор</label>
+            <input class="form-control" formControlName="curatorName" id="curatorName">
+
+            <label class="col-form-label" for="headman">Староста</label>
+            <ngx-select-dropdown [options]="students" [config]="studentConfig" [multiple]="false" formControlName="headman" id="headman"></ngx-select-dropdown>
+
+            <label class="col-form-label" for="disciplineIds">Дисциплины</label>
+            <ngx-select-dropdown [options]="allDisciplines" [config]="disciplineConfig" [multiple]="true" formControlName="disciplines" id="disciplineIds"></ngx-select-dropdown>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="editGroup()">Редактировать</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="groupForm.reset({ disciplineIds: [] });">Отменить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

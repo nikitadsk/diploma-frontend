@@ -16,7 +16,7 @@
 
 <ng-container *ngIf="selectedGroup">
   <app-details-panel [(opened)]="sidebarOpened" [panelClass]="'EnKlassehar'">
-    <app-group-details [group]="selectedGroup"></app-group-details>
+    <app-group-details [groupId]="selectedGroup._id"></app-group-details>
   </app-details-panel>
 </ng-container>
 

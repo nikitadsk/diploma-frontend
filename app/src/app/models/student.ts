@@ -5,4 +5,5 @@ export interface IStudent {
   patronym: string;
   groupId: string;
   isHeadman?: boolean;
+  studentName?: string;
 }

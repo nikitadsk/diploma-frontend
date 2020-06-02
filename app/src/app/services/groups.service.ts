@@ -19,11 +19,20 @@ export class GroupsService {
     return this.http.get(this.url) as Observable<IGroup[]>;
   }
 
+  public getById(id): Observable<IGroup> {
+    return this.http.get(this.url + '/' + id) as Observable<IGroup>;
+  }
+
   public getByCuratorId(curatorId: string): Observable<IGroup> {
     return this.http.get(this.url + '/by-curator-id/' + curatorId) as Observable<IGroup>;
   }
 
   public create(group: IGroup) {
     return this.http.post(this.url, group);
+  }
+
+  public update(group: IGroup) {
+    console.log(group._id);
+    return this.http.put(this.url + '/' + group._id, group);
   }
 }

@@ -1,3 +1,5 @@
+import {IDiscipline} from './discipline';
+
 export interface IGroup {
   _id?: string;
   groupNumber: number;
@@ -8,4 +10,5 @@ export interface IGroup {
   disciplineIds: string[];
   specialtyName?: string;
   curatorName?: string;
+  disciplines?: IDiscipline[];
 }
