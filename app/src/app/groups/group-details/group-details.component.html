@@ -5,7 +5,7 @@
       <i class="fa fa-pen align-self-center"
          style="margin-left: 20px; font-size: 15px; cursor: pointer;"
          data-toggle="modal"
-         data-target="#editDialog"
+         data-target="#editGroupDialog"
          (click)="clickEditGroup()"></i>
     </h2>
     <ul ngbNav #nav="ngbNav" class="nav-tabs" style="margin-top: 20px;">
@@ -62,7 +62,26 @@
       <li [ngbNavItem]="3">
         <a ngbNavLink>Расписание</a>
         <ng-template ngbNavContent>
-          3
+          <ng-container *ngIf="schedules">
+            <button class="btn btn-primary"
+                    style="margin: 10px 0"
+                    data-toggle="modal"
+                    data-target="#addScheduleDialog"
+                    (click)="openAddSchedule()"
+            >
+              <span>Добавить <i class="fa fa-plus"></i></span>
+            </button>
+            <div class="list-group">
+              <button class="btn list-group-item list-group-item-action"
+                      [class.btn-danger]="!schedule.isVerified"
+                      [class.btn-success]="schedule.isVerified"
+                      *ngFor="let schedule of schedules"
+                      data-toggle="modal"
+                      data-target="#showScheduleDialog"
+                      (click)="showSchedule(schedule)"
+              >{{ schedule.regionalDate }}</button>
+            </div>
+          </ng-container>
         </ng-template>
       </li>
     </ul>
@@ -70,65 +89,176 @@
     <div [ngbNavOutlet]="nav" class="mt-2"></div>
   </div>
 
-  <div class="modal" tabindex="-1" role="dialog" id="addStudent">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Добавить студента</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form [formGroup]="studentForm">
-            <label class="col-form-label" for="lastName">Фамилия</label>
-            <input class="form-control" id="lastName" formControlName="lastName">
-            <label class="col-form-label" for="firstName">Имя</label>
-            <input class="form-control" id="firstName" formControlName="firstName">
-            <label class="col-form-label" for="patronym">Отчество</label>
-            <input class="form-control" id="patronym" formControlName="patronym">
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addStudent()">Добавить</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="studentForm.reset();">Отменить</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal" tabindex="-1" role="dialog" id="editDialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Добавить группу</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form [formGroup]="groupForm">
-            <label class="col-form-label" for="groupNumber">Номер группы</label>
-            <input class="form-control" id="groupNumber" formControlName="groupNumber">
-
-            <label class="col-form-label" for="specialtyName">Специальность</label>
-            <input class="form-control" formControlName="specialtyName" id="specialtyName">
-
-            <label class="col-form-label" for="curatorName">Куратор</label>
-            <input class="form-control" formControlName="curatorName" id="curatorName">
-
-            <label class="col-form-label" for="headman">Староста</label>
-            <ngx-select-dropdown [options]="students" [config]="studentConfig" [multiple]="false" formControlName="headman" id="headman"></ngx-select-dropdown>
-
-            <label class="col-form-label" for="disciplineIds">Дисциплины</label>
-            <ngx-select-dropdown [options]="allDisciplines" [config]="disciplineConfig" [multiple]="true" formControlName="disciplines" id="disciplineIds"></ngx-select-dropdown>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="editGroup()">Редактировать</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="groupForm.reset({ disciplineIds: [] });">Отменить</button>
-        </div>
-      </div>
-    </div>
-  </div>
 </ng-container>
+
+<div class="modal" tabindex="-1" role="dialog" id="addStudent">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Добавить студента</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="studentForm">
+          <label class="col-form-label" for="lastName">Фамилия</label>
+          <input class="form-control" id="lastName" formControlName="lastName">
+          <label class="col-form-label" for="firstName">Имя</label>
+          <input class="form-control" id="firstName" formControlName="firstName">
+          <label class="col-form-label" for="patronym">Отчество</label>
+          <input class="form-control" id="patronym" formControlName="patronym">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addStudent()">Добавить</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="studentForm.reset();">Отменить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="editGroupDialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Добавить группу</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="groupForm">
+          <label class="col-form-label" for="groupNumber">Номер группы</label>
+          <input class="form-control" id="groupNumber" formControlName="groupNumber">
+
+          <label class="col-form-label" for="specialtyName">Специальность</label>
+          <input class="form-control" formControlName="specialtyName" id="specialtyName">
+
+          <label class="col-form-label" for="curatorName">Куратор</label>
+          <input class="form-control" formControlName="curatorName" id="curatorName">
+
+          <label class="col-form-label" for="headman">Староста</label>
+          <ngx-select-dropdown [options]="students"
+                               [config]="studentConfig"
+                               [multiple]="false"
+                               formControlName="headman"
+                               id="headman"
+          ></ngx-select-dropdown>
+
+          <label class="col-form-label" for="disciplineIds">Дисциплины</label>
+          <ngx-select-dropdown [options]="allDisciplines"
+                               [config]="disciplineConfig"
+                               [multiple]="true"
+                               formControlName="disciplines"
+                               id="disciplineIds"
+          ></ngx-select-dropdown>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="editGroup()">Редактировать</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="groupForm.reset({ disciplineIds: [] });">Отменить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="showScheduleDialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Просмотр расписания</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="removeAllControls()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="scheduleForm">
+          <label class="col-form-label" for="scheduleDate">Дата</label>
+          <input class="form-control"
+                 style="margin-bottom: 20px;"
+                 id="scheduleDate"
+                 formControlName="regionalDate"
+                 [attr.disabled]="true">
+
+          <ng-container formArrayName="lessons">
+            <ng-container *ngFor="let _ of lessons.value; let i = index;">
+              <ng-container [formGroupName]="i">
+                <div class="row">
+                  <div class="col">
+                    <label class="col-form-label" for="disciplineName">Дисциплина</label>
+                    <input class="form-control"
+                           id="disciplineName"
+                           formControlName="disciplineName"
+                           [attr.disabled]="true"
+                    >
+                  </div>
+                  <div class="col">
+                    <label class="col-form-label" for="teacherName">Преподаватель</label>
+                    <input class="form-control"
+                           id="teacherName"
+                           formControlName="teacherName"
+                           [attr.disabled]="true"
+                    >
+                  </div>
+                </div>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="removeAllControls()">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="addScheduleDialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Просмотр расписания</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="removeAllControls()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="scheduleForm">
+          <label class="col-form-label" for="scheduleDateForAdd">Дата</label>
+          <input class="form-control"
+                 style="margin-bottom: 20px;"
+                 id="scheduleDateForAdd"
+                 formControlName="regionalDate"
+                 type="date">
+
+          <ng-container formArrayName="lessons">
+            <ng-container *ngFor="let _ of lessons.value; let i = index;">
+              <ng-container [formGroupName]="i">
+                <div class="row">
+                  <div class="col">
+                    <label class="col-form-label" for="teacherNameForAdd">Преподаватель</label>
+                    <input class="form-control"
+                           id="teacherNameForAdd"
+                           formControlName="teacherName"
+                    >
+                  </div>
+                  <div class="col">
+                    <label class="col-form-label" for="disciplineNameForAdd">Дисциплина</label>
+                    <input class="form-control"
+                           id="disciplineNameForAdd"
+                           formControlName="disciplineName"
+                    >
+                  </div>
+                </div>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="removeAllControls()">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>

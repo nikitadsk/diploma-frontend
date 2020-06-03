@@ -5,9 +5,11 @@ import {IDiscipline} from '../../models/discipline';
 import {DisciplinesService} from '../../services/disciplines.service';
 import {StudentsService} from '../../services/students.service';
 import {IStudent} from '../../models/student';
-import {FormBuilder, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, Validators} from '@angular/forms';
 import {concatMap, flatMap, map, mergeMap, tap, toArray} from 'rxjs/operators';
 import {GroupsService} from '../../services/groups.service';
+import {SchedulesService} from '../../services/schedules.service';
+import {ISchedule} from '../../models/schedule';
 
 @Component({
   selector: 'app-group-details',
@@ -23,6 +25,7 @@ export class GroupDetailsComponent implements OnInit, OnChanges {
   disciplines: IDiscipline[];
   allDisciplines: IDiscipline[];
   students: IStudent[];
+  schedules: ISchedule[];
 
   studentsHeaderNames: string[] = [
     'Фамилия',
@@ -51,6 +54,13 @@ export class GroupDetailsComponent implements OnInit, OnChanges {
     disciplines: ['', Validators.required]
   });
 
+  scheduleForm = this.fb.group({
+    _id: [''],
+    regionalDate: [''],
+    date: ['', Validators.required],
+    lessons: this.fb.array([])
+  });
+
   disciplineConfig = {
     displayKey: 'disciplineName',
     search: true,
@@ -75,8 +85,13 @@ export class GroupDetailsComponent implements OnInit, OnChanges {
     private disciplinesService: DisciplinesService,
     private studentsService: StudentsService,
     private groupsService: GroupsService,
+    private schedulesService: SchedulesService,
     private fb: FormBuilder
   ) { }
+
+  get lessons() {
+    return this.scheduleForm.get('lessons') as FormArray;
+  }
 
   ngOnInit(): void {
   }
@@ -94,14 +109,16 @@ export class GroupDetailsComponent implements OnInit, OnChanges {
               return student;
             }),
             toArray()
-          )
+          ),
+          schedules: this.schedulesService.getByGroupId(this.group._id)
         });
       })
     );
 
-    const subscription = source.subscribe(({ disciplines, students}) => {
+    const subscription = source.subscribe(({ disciplines, students, schedules}) => {
       this.disciplines = disciplines;
       this.students = students;
+      this.schedules = schedules;
       subscription.unsubscribe();
     });
   }
@@ -141,10 +158,13 @@ export class GroupDetailsComponent implements OnInit, OnChanges {
 
   editGroup() {
     if (this.groupForm.valid && this.groupForm.dirty) {
+
       const editedGroup = this.groupForm.value;
+
       editedGroup._id = this.group._id;
       editedGroup.headmanId = editedGroup.headman._id;
       editedGroup.disciplineIds = editedGroup.disciplines.map(discipline => discipline._id);
+
       const subscription = this.groupsService.update(editedGroup).pipe(
         concatMap(() => forkJoin({
           group: this.groupsService.getById(this.groupId),
@@ -154,6 +174,7 @@ export class GroupDetailsComponent implements OnInit, OnChanges {
         this.group = group;
         this.disciplines = disciplines;
         this.groupForm.reset();
+
         subscription.unsubscribe();
       });
     }
@@ -163,4 +184,35 @@ export class GroupDetailsComponent implements OnInit, OnChanges {
     return of(content);
   }
 
+  showSchedule(schedule: ISchedule) {
+    this.scheduleForm.patchValue(schedule);
+
+    schedule.lessons.forEach(lesson => {
+      const lessonFormGroup = this.createLesson();
+      lessonFormGroup.patchValue(lesson);
+      this.lessons.push(lessonFormGroup);
+    });
+  }
+
+  createLesson() {
+    return this.fb.group({
+      teacherId: ['', Validators.required],
+      disciplineId: ['', Validators.required],
+      teacherName: [''],
+      disciplineName: ['']
+    });
+  }
+
+  removeAllControls() {
+    this.lessons.controls = [];
+    this.lessons.patchValue([]);
+  }
+
+  removeControlById(id) {
+    this.lessons.removeAt(id);
+  }
+
+  openAddSchedule() {
+    (this.scheduleForm.get('lessons') as FormArray).push(this.createLesson());
+  }
 }

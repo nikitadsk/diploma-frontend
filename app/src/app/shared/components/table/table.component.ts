@@ -12,7 +12,7 @@ export class TableComponent implements OnInit {
   @Input() headerNames: string[];
   @Input() contents: Observable<any>;
   @Input() contentFields: string[] = [];
-  @Input() addDeleting: boolean = false;
+  @Input() addDeleting = false;
 
   @Output() clickContent: EventEmitter<any> = new EventEmitter<any>();
   @Output() contentDeleted: EventEmitter<any> = new EventEmitter<any>();
@@ -28,7 +28,11 @@ export class TableComponent implements OnInit {
     let result = { ...content };
     const stages = field.split('.');
     stages.forEach((value: string) => {
-      result = value.includes('Date') ? moment(result[value]).format('YYYY-MM-DD') : result[value];
+      if (field === 'date') {
+        result = moment(result[value]).format('DD.MM.YYYY');
+      } else {
+        result = result[value];
+      }
     });
 
     return result;

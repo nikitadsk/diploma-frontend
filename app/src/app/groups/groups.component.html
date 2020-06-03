@@ -35,13 +35,28 @@
           <input class="form-control" id="groupNumber" formControlName="groupNumber">
 
           <label class="col-form-label" for="specialtyId">Специальность</label>
-          <ngx-select-dropdown [options]="allSpecialty" [config]="specialtyConfig" [multiple]="false" formControlName="specialtyId" id="specialtyId"></ngx-select-dropdown>
+          <ngx-select-dropdown [options]="allSpecialty"
+                               [config]="specialtyConfig"
+                               [multiple]="false"
+                               formControlName="specialtyId"
+                               id="specialtyId"
+          ></ngx-select-dropdown>
 
           <label class="col-form-label" for="curatorId">Куратор</label>
-          <ngx-select-dropdown [options]="allAvailableTeachers" [config]="teacherConfig" [multiple]="false" formControlName="curatorId" id="curatorId"></ngx-select-dropdown>
+          <ngx-select-dropdown [options]="allAvailableTeachers"
+                               [config]="teacherConfig"
+                               [multiple]="false"
+                               formControlName="curatorId"
+                               id="curatorId"
+          ></ngx-select-dropdown>
 
           <label class="col-form-label" for="disciplineIds">Дисциплины</label>
-          <ngx-select-dropdown [options]="allDisciplines" [config]="disciplineConfig" [multiple]="true" formControlName="disciplineIds" id="disciplineIds"></ngx-select-dropdown>
+          <ngx-select-dropdown [options]="allDisciplines"
+                               [config]="disciplineConfig"
+                               [multiple]="true"
+                               formControlName="disciplineIds"
+                               id="disciplineIds"
+          ></ngx-select-dropdown>
         </form>
       </div>
       <div class="modal-footer">

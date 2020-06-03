@@ -23,14 +23,6 @@ const routes: Routes = [
     path: 'groups',
     loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)
   },
-  {
-    path: 'schedule',
-    loadChildren: () => import('./schedule/schedule.module').then(m => m.ScheduleModule)
-  },
-  {
-    path: 'skippings',
-    loadChildren: () => import('./skippings/skippings.module').then(m => m.SkippingsModule)
-  },
   { path: '**', redirectTo: 'home', pathMatch: 'full' }
 ];
 
