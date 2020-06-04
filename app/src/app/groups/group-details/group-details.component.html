@@ -182,7 +182,7 @@
                  [attr.disabled]="true">
 
           <ng-container formArrayName="lessons">
-            <ng-container *ngFor="let _ of lessons.value; let i = index;">
+            <ng-container *ngFor="let _ of getLessons().controls; let i = index;">
               <ng-container [formGroupName]="i">
                 <div class="row">
                   <div class="col">
@@ -214,11 +214,11 @@
   </div>
 </div>
 
-<div class="modal" tabindex="-1" role="dialog" id="addScheduleDialog">
+<div class="modal fade" tabindex="-1" role="dialog" id="addScheduleDialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Просмотр расписания</h5>
+        <h5 class="modal-title">Добавить расписания</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="removeAllControls()">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -229,27 +229,39 @@
           <input class="form-control"
                  style="margin-bottom: 20px;"
                  id="scheduleDateForAdd"
-                 formControlName="regionalDate"
+                 formControlName="date"
                  type="date">
-
+          <button class="btn btn-primary" (click)="addOneFormGroup()">Добавить</button>
+          <span style="margin-left: 20px; color: red;">Одна строчка отвечает за полупару</span>
           <ng-container formArrayName="lessons">
-            <ng-container *ngFor="let _ of lessons.value; let i = index;">
+            <ng-container *ngFor="let _ of getLessons().controls; let i = index;">
               <ng-container [formGroupName]="i">
-                <div class="row">
+                <div class="row" style="margin-bottom: 10px;">
                   <div class="col">
-                    <label class="col-form-label" for="teacherNameForAdd">Преподаватель</label>
-                    <input class="form-control"
-                           id="teacherNameForAdd"
-                           formControlName="teacherName"
-                    >
+                    <label class="col-form-label" for="discipline">Дисциплина</label>
+                    <ngx-select-dropdown id="discipline"
+                                         formControlName="discipline"
+                                         [options]="disciplines"
+                                         [config]="disciplineConfig"
+                                         (change)="disciplineSelected($event.value, i)"
+                    ></ngx-select-dropdown>
                   </div>
                   <div class="col">
-                    <label class="col-form-label" for="disciplineNameForAdd">Дисциплина</label>
-                    <input class="form-control"
-                           id="disciplineNameForAdd"
-                           formControlName="disciplineName"
-                    >
+                    <label class="col-form-label" for="teacher">Преподаватель</label>
+                    <ngx-select-dropdown #teacherDropdown
+                                         id="teacher"
+                                         formControlName="teacher"
+                                         [config]="teacherConfig"
+                    ></ngx-select-dropdown>
                   </div>
+                  <ng-container *ngIf="i !== 0">
+                    <span class="d-flex" style="align-items: flex-end;">
+                      <i class="fa fa-trash"
+                         style="margin-right: 10px; margin-bottom: 10px; cursor: pointer"
+                         (click)="removeControlById(i)"
+                      ></i>
+                    </span>
+                  </ng-container>
                 </div>
               </ng-container>
             </ng-container>
@@ -257,6 +269,7 @@
         </form>
       </div>
       <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="createSchedule()">Добавить</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="removeAllControls()">Закрыть</button>
       </div>
     </div>

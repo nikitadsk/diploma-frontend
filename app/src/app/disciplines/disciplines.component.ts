@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {Observable} from "rxjs";
-import {IDiscipline} from "../models/discipline";
-import {DisciplinesService} from "../services/disciplines.service";
+import {Observable} from 'rxjs';
+import {IDiscipline} from '../models/discipline';
+import {DisciplinesService} from '../services/disciplines.service';
 
 @Component({
   selector: 'app-disciplines',
@@ -20,7 +20,7 @@ export class DisciplinesComponent implements OnInit {
   contentFields: string[] = [
     '_id',
     'disciplineName'
-  ]
+  ];
 
   constructor(private disciplinesService: DisciplinesService) { }
 
@@ -36,7 +36,6 @@ export class DisciplinesComponent implements OnInit {
   }
 
   deleteDiscipline(discipline: IDiscipline) {
-    console.log(discipline);
     const subscription = this.disciplinesService.delete(discipline._id).subscribe(() => {
       this.disciplines = this.disciplinesService.getAll();
       subscription.unsubscribe();

@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChildren} from '@angular/core';
 import {IGroup} from '../../models/group';
 import {forkJoin, of} from 'rxjs';
 import {IDiscipline} from '../../models/discipline';
@@ -10,6 +10,8 @@ import {concatMap, flatMap, map, mergeMap, tap, toArray} from 'rxjs/operators';
 import {GroupsService} from '../../services/groups.service';
 import {SchedulesService} from '../../services/schedules.service';
 import {ISchedule} from '../../models/schedule';
+import {TeachersService} from '../../services/teachers.service';
+import {SelectDropDownComponent} from 'ngx-select-dropdown';
 
 @Component({
   selector: 'app-group-details',
@@ -19,6 +21,8 @@ import {ISchedule} from '../../models/schedule';
 export class GroupDetailsComponent implements OnInit, OnChanges {
 
   @Input() groupId: string;
+
+  @ViewChildren('teacherDropdown') teacherDropdown: QueryList<SelectDropDownComponent>;
 
   group: IGroup;
 
@@ -81,15 +85,26 @@ export class GroupDetailsComponent implements OnInit, OnChanges {
     placeholder: 'Выберите'
   };
 
+  teacherConfig = {
+    displayKey: 'name',
+    search: true,
+    limitTo: 3,
+    selectedItems: [],
+    searchPlaceholder: 'Поиск',
+    noResultsFound: 'Не найдено результатов',
+    placeholder: 'Выберите'
+  };
+
   constructor(
     private disciplinesService: DisciplinesService,
     private studentsService: StudentsService,
     private groupsService: GroupsService,
     private schedulesService: SchedulesService,
+    private teachersService: TeachersService,
     private fb: FormBuilder
   ) { }
 
-  get lessons() {
+  getLessons() {
     return this.scheduleForm.get('lessons') as FormArray;
   }
 
@@ -190,29 +205,70 @@ export class GroupDetailsComponent implements OnInit, OnChanges {
     schedule.lessons.forEach(lesson => {
       const lessonFormGroup = this.createLesson();
       lessonFormGroup.patchValue(lesson);
-      this.lessons.push(lessonFormGroup);
+      this.getLessons().push(lessonFormGroup);
     });
   }
 
   createLesson() {
     return this.fb.group({
-      teacherId: ['', Validators.required],
-      disciplineId: ['', Validators.required],
+      teacherId: [''],
+      disciplineId: [''],
       teacherName: [''],
-      disciplineName: ['']
+      disciplineName: [''],
+      discipline: ['', Validators.required],
+      teacher: [{value: '', disabled: true}, Validators.required]
     });
   }
 
   removeAllControls() {
-    this.lessons.controls = [];
-    this.lessons.patchValue([]);
+    this.getLessons().controls = [];
+    this.getLessons().patchValue([]);
   }
 
   removeControlById(id) {
-    this.lessons.removeAt(id);
+    this.getLessons().removeAt(id);
   }
 
   openAddSchedule() {
     (this.scheduleForm.get('lessons') as FormArray).push(this.createLesson());
+  }
+
+  addOneFormGroup() {
+    (this.scheduleForm.get('lessons') as FormArray).push(this.createLesson());
+  }
+
+  disciplineSelected(discipline, controlId) {
+    if (discipline) {
+      const teacherDropdown = this.teacherDropdown.toArray();
+      teacherDropdown[controlId].availableItems = [];
+      teacherDropdown[controlId].selectedItems = [];
+      teacherDropdown[controlId].selectedDisplayText = '';
+
+      const subscription = this.teachersService.getByDisciplineId(discipline._id).subscribe(teachers => {
+        (this.scheduleForm.get('lessons') as FormArray).controls[controlId].get('teacher').enable();
+        teacherDropdown[controlId].availableItems = teachers;
+        subscription.unsubscribe();
+      });
+    } else {
+      (this.scheduleForm.get('lessons') as FormArray).controls[controlId].get('teacher').disable();
+    }
+  }
+
+  createSchedule() {
+    if (this.scheduleForm.valid) {
+      const schedule: ISchedule = this.scheduleForm.value;
+
+      schedule.groupId = this.groupId;
+      schedule.lessons.forEach(lesson => {
+        lesson.disciplineId = lesson.discipline._id;
+        lesson.teacherId = lesson.teacher._id;
+      });
+
+      const subscription = this.schedulesService.create(schedule).subscribe(() => {
+        this.ngOnChanges({});
+        subscription.unsubscribe();
+      });
+    }
+    this.removeAllControls();
   }
 }

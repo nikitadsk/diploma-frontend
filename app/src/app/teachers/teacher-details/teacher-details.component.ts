@@ -24,7 +24,6 @@ export class TeacherDetailsComponent implements OnChanges {
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(this.teacher);
     this.teacherDisciplines = this.disciplinesService.getByIds(this.teacher.disciplineIds);
 
     if (this.teacher.isCurator) {

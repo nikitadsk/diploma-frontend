@@ -21,6 +21,10 @@ export class TeachersService {
     return this.http.get(this.url + '/available/as-new-curator') as Observable<ITeacher[]>;
   }
 
+  public getByDisciplineId(disciplineId: string): Observable<ITeacher[]> {
+    return this.http.get(this.url + '/by-discipline-id/' + disciplineId) as Observable<ITeacher[]>;
+  }
+
   public create(teacher: ITeacher) {
     return this.http.post(this.url, teacher);
   }

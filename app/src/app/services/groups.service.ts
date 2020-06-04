@@ -32,7 +32,6 @@ export class GroupsService {
   }
 
   public update(group: IGroup) {
-    console.log(group._id);
     return this.http.put(this.url + '/' + group._id, group);
   }
 }
