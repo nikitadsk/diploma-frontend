@@ -95,9 +95,7 @@
               <div class="list-group">
                 <button class="btn list-group-item list-group-item-action"
                         *ngFor="let schedule of noMarkedSchedules"
-                        data-toggle="modal"
-                        data-target=""
-                        (click)="showSchedule(schedule)"
+                        (click)="openAddSkippingModal(schedule)"
                 >{{ schedule.regionalDate }}</button>
               </div>
             </ng-container>

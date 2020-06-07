@@ -12,6 +12,8 @@ import {SchedulesService} from '../../services/schedules.service';
 import {ISchedule} from '../../models/schedule';
 import {TeachersService} from '../../services/teachers.service';
 import {SelectDropDownComponent} from 'ngx-select-dropdown';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {AddSkippingsComponent} from '../../shared/components/add-skippings/add-skippings.component';
 
 @Component({
   selector: 'app-group-details',
@@ -105,7 +107,8 @@ export class GroupDetailsComponent implements OnInit, OnChanges {
     private groupsService: GroupsService,
     private schedulesService: SchedulesService,
     private teachersService: TeachersService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private modal: NgbModal,
   ) { }
 
   getLessons() {
@@ -279,5 +282,16 @@ export class GroupDetailsComponent implements OnInit, OnChanges {
       });
     }
     this.removeAllControls();
+  }
+
+  openAddSkippingModal(schedule) {
+    const openedModal = this.modal.open(AddSkippingsComponent, { size: 'xl'});
+    openedModal.componentInstance.schedule = schedule;
+    openedModal.componentInstance.students = this.students;
+    openedModal.result
+      .then(data => {
+        console.log(data); // TODO: Сделоц сервис, шобы все было чики-пуки
+      })
+      .catch(() => {});
   }
 }
