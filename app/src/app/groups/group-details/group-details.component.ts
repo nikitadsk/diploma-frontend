@@ -31,6 +31,10 @@ export class GroupDetailsComponent implements OnInit, OnChanges {
   students: IStudent[];
   schedules: ISchedule[];
 
+  noMarkedSchedules: ISchedule[];
+  noVerifiedSchedules: ISchedule[];
+  verifiedSchedules: ISchedule[];
+
   studentsHeaderNames: string[] = [
     'Фамилия',
     'Имя',
@@ -134,6 +138,11 @@ export class GroupDetailsComponent implements OnInit, OnChanges {
       this.disciplines = disciplines;
       this.students = students;
       this.schedules = schedules;
+
+      this.noMarkedSchedules = schedules.filter(schedule => !schedule.isMarked);
+      this.noVerifiedSchedules = schedules.filter(schedule => schedule.isMarked && !schedule.isVerified);
+      this.verifiedSchedules = schedules.filter(schedule => schedule.isVerified);
+
       subscription.unsubscribe();
     });
   }

@@ -84,6 +84,56 @@
           </ng-container>
         </ng-template>
       </li>
+      <li [ngbNavItem]="4">
+        <a ngbNavLink>Пропуски</a>
+        <ng-template ngbNavContent>
+          <div>
+            <p>
+              <span><b>Не отмеченные</b></span>
+            </p>
+            <ng-container *ngIf="noMarkedSchedules else noContent">
+              <div class="list-group">
+                <button class="btn list-group-item list-group-item-action"
+                        *ngFor="let schedule of noMarkedSchedules"
+                        data-toggle="modal"
+                        data-target=""
+                        (click)="showSchedule(schedule)"
+                >{{ schedule.regionalDate }}</button>
+              </div>
+            </ng-container>
+          </div>
+
+          <div>
+            <p>
+              <span><b>Не проверенные заведующим отделением</b></span>
+            </p>
+            <ng-container *ngIf="noVerifiedSchedules else noContent">
+              <div class="list-group">
+                <button class="btn list-group-item list-group-item-action"
+                        *ngFor="let schedule of noVerifiedSchedules"
+                        data-toggle="modal"
+                        data-target=""
+                >{{ schedule.regionalDate }}</button>
+              </div>
+            </ng-container>
+          </div>
+
+          <div>
+            <p>
+              <span><b>Проверенные</b></span>
+            </p>
+            <ng-container *ngIf="verifiedSchedules else noContent">
+              <div class="list-group">
+                <button class="btn list-group-item list-group-item-action"
+                        *ngFor="let schedule of verifiedSchedules"
+                        data-toggle="modal"
+                        data-target=""
+                >{{ schedule.regionalDate }}</button>
+              </div>
+            </ng-container>
+          </div>
+        </ng-template>
+      </li>
     </ul>
 
     <div [ngbNavOutlet]="nav" class="mt-2"></div>
@@ -275,3 +325,8 @@
     </div>
   </div>
 </div>
+
+
+<ng-template #noContent>
+  <span style="color: red;">Нет контента</span>
+</ng-template>

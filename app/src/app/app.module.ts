@@ -12,6 +12,7 @@ import {ToastrModule} from 'ngx-toastr';
 import {ToastrInterceptor} from './interceptors/toastr.interceptor';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {NgHttpLoaderModule} from 'ng-http-loader';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     HttpClientModule,
     ReactiveFormsModule,
     ToastrModule.forRoot(),
+    NgHttpLoaderModule.forRoot(),
     NgbModule
   ],
   providers: [
