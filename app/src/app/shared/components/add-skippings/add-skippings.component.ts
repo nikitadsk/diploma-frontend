@@ -48,8 +48,8 @@ export class AddSkippingsComponent implements OnInit {
   createSkipping() {
     return this.fb.group({
       id: ['', Validators.required],
-      respectfulStudentObjects: [''],
-      disrespectfulStudentObjects: [],
+      respectfulStudentObjects: [[]],
+      disrespectfulStudentObjects: [[]],
     });
   }
 

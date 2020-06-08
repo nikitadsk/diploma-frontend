@@ -14,6 +14,7 @@ import {TeachersService} from '../../services/teachers.service';
 import {SelectDropDownComponent} from 'ngx-select-dropdown';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AddSkippingsComponent} from '../../shared/components/add-skippings/add-skippings.component';
+import {SkippingsService} from '../../services/skippings.service';
 
 @Component({
   selector: 'app-group-details',
@@ -107,6 +108,7 @@ export class GroupDetailsComponent implements OnInit, OnChanges {
     private groupsService: GroupsService,
     private schedulesService: SchedulesService,
     private teachersService: TeachersService,
+    private skippingsService: SkippingsService,
     private fb: FormBuilder,
     private modal: NgbModal,
   ) { }
@@ -290,8 +292,26 @@ export class GroupDetailsComponent implements OnInit, OnChanges {
     openedModal.componentInstance.students = this.students;
     openedModal.result
       .then(data => {
-        console.log(data); // TODO: Сделоц сервис, шобы все было чики-пуки
+        console.log(data);
+        data.scheduleId = schedule._id;
+        data.skippings.forEach(skipping => {
+
+          skipping.respectfulSkippings = [];
+          skipping.disrespectfulSkippings = [];
+
+          skipping.respectfulStudentObjects.forEach(student => {
+            skipping.respectfulSkippings.push(student._id);
+          });
+
+          skipping.disrespectfulStudentObjects.forEach(student => {
+            skipping.disrespectfulSkippings.push(student._id);
+          });
+        });
+        const subscription = this.skippingsService.create(data).subscribe(() => {
+          this.ngOnChanges({});
+          subscription.unsubscribe();
+        });
       })
-      .catch(() => {});
+      .catch((err) => { console.log(err); });
   }
 }
