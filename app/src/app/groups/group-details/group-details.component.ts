@@ -292,7 +292,6 @@ export class GroupDetailsComponent implements OnInit, OnChanges {
     openedModal.componentInstance.students = this.students;
     openedModal.result
       .then(data => {
-        console.log(data);
         data.scheduleId = schedule._id;
         data.skippings.forEach(skipping => {
 

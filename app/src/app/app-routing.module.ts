@@ -3,11 +3,16 @@ import { Routes, RouterModule } from '@angular/router';
 import {HomeComponent} from './home/home.component';
 import {LoginComponent} from './login/login.component';
 import {CheckTokenGuard} from './guards/check-token.guard';
+import {IsAuthorizationedGuard} from './guards/is-authorizationed.guard';
 
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
+  {
+    path: 'login',
+    component: LoginComponent,
+    canActivate: [IsAuthorizationedGuard]
+  },
   {
     path: 'teachers',
     loadChildren: () => import('./teachers/teachers.module').then(m => m.TeachersModule),

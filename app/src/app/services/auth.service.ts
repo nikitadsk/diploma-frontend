@@ -29,7 +29,6 @@ export class AuthService {
     const user = localStorage.getItem('user');
     if (user) {
       const parsedUser = JSON.parse(user);
-      console.log(parsedUser);
       result = `${parsedUser.firstName} ${parsedUser.lastName}`;
     }
 

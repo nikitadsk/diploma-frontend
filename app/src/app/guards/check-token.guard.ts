@@ -1,15 +1,16 @@
 import {Injectable} from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router} from '@angular/router';
+import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AuthService} from '../services/auth.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CheckTokenGuard implements CanActivate {
   constructor(
-    private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private toasterService: ToastrService
   ) { }
 
   canActivate(
@@ -19,6 +20,7 @@ export class CheckTokenGuard implements CanActivate {
     if (this.authService.getToken()) {
       return this.authService.checkToken();
     } else {
+      this.toasterService.error('Токен не найден', 'Ошибка авторизации');
       return false;
     }
   }
