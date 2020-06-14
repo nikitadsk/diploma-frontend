@@ -5,7 +5,7 @@ import {
   HttpEvent,
   HttpInterceptor, HttpResponse, HttpErrorResponse
 } from '@angular/common/http';
-import {Observable, of} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import {ToastrService} from 'ngx-toastr';
 import {catchError, tap} from 'rxjs/operators';
 
@@ -30,7 +30,7 @@ export class ToastrInterceptor implements HttpInterceptor {
             this.toasterService.error('Произошла ошибка', '', { positionClass: 'toast-top-right' });
           }
         }
-        return of(err);
+        return throwError(err);
       })
     );
   }

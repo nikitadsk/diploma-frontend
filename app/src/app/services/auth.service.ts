@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {Observable, of, Subject} from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,8 @@ export class AuthService {
   userAuth$: Subject<string | undefined> = new Subject<string|undefined>();
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) {
   }
 
@@ -21,12 +24,13 @@ export class AuthService {
     return localStorage.getItem('token');
   }
 
-  public getUserName(): string | undefined {
+  public getUserName(): string {
     let result;
     const user = localStorage.getItem('user');
     if (user) {
-      const { firstName, lastName } = JSON.parse(user);
-      result = `${firstName} ${lastName}`;
+      const parsedUser = JSON.parse(user);
+      console.log(parsedUser);
+      result = `${parsedUser.firstName} ${parsedUser.lastName}`;
     }
 
     return result;
@@ -41,7 +45,22 @@ export class AuthService {
 
   public logout() {
     localStorage.clear();
+    this.router.navigateByUrl('/home');
     this.userAuth$.next(undefined);
+  }
+
+  public checkToken(): Observable<boolean> {
+    const token = this.getToken();
+    return this.http.post(environment.apiUrl + 'check-token', { token }).pipe(
+      map(({ user }: any) => {
+        localStorage.setItem('user', JSON.stringify(user));
+        return true;
+      }),
+      catchError(() => {
+        this.logout();
+        return of(false);
+      }),
+    );
   }
 
 }
