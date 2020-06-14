@@ -42,4 +42,8 @@ export class SchedulesService {
   public create(schedule: ISchedule) {
     return this.http.post(this.url, schedule);
   }
+
+  public getByGroupIdAndDates({ groupId, startDate, endDate}) {
+    return this.http.post(environment.apiUrl + 'skippings/by-group-and-dates', { groupId, startDate, endDate});
+  }
 }
