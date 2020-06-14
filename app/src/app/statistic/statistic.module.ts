@@ -4,6 +4,8 @@ import { StatisticComponent } from './statistic.component';
 import {StatisticRoutingModule} from './statistic-routing.module';
 import {SharedModule} from '../shared/shared.module';
 import {NgApexchartsModule} from 'ng-apexcharts';
+import {SelectDropDownModule} from 'ngx-select-dropdown';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 
@@ -11,9 +13,11 @@ import {NgApexchartsModule} from 'ng-apexcharts';
   declarations: [StatisticComponent],
   imports: [
     SharedModule,
+    ReactiveFormsModule,
     NgApexchartsModule,
     CommonModule,
-    StatisticRoutingModule
+    StatisticRoutingModule,
+    SelectDropDownModule
   ]
 })
 export class StatisticModule { }

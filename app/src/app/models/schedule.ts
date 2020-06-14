@@ -16,4 +16,12 @@ export interface ISchedule {
   }[];
   isVerified: boolean;
   isMarked: boolean;
+  skippings?: {
+    disrespectfulSkippings: string[],
+    respectfulSkippings: string[],
+    id: number
+  }[];
+  respectfulSkippingsCount?: number;
+  disrespectfulSkippingsCount?: number;
+  allSkippingsCount?: number;
 }

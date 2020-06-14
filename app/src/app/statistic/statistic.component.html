@@ -1,3 +1,39 @@
 <div class="d-flex flex-column" style="margin: 20px">
+  <div class="row" [formGroup]="searchForm">
+    <div class="form-group col">
+      <label for="group">Группа</label>
+      <ngx-select-dropdown id="group"
+                           formControlName="group"
+                           [config]="groupsConfig"
+                           [options]="groups | async"
+                           [multiple]="false"
+      ></ngx-select-dropdown>
+    </div>
+
+    <div class="form-group col">
+      <label for="startDate">Начальная дата</label>
+      <input class="form-control" type="date" id="startDate" formControlName="startDate">
+    </div>
+
+    <div class="form-group col">
+      <label for="endDate">Конечная дата</label>
+      <input class="form-control" type="date" id="endDate" formControlName="endDate">
+    </div>
+  </div>
+
+  <div id="chart" *ngIf="isVisible">
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [dataLabels]="chartOptions.dataLabels"
+      [plotOptions]="chartOptions.plotOptions"
+      [responsive]="chartOptions.responsive"
+      [xaxis]="chartOptions.xaxis"
+      [legend]="chartOptions.legend"
+      [fill]="chartOptions.fill"
+      [colors]="['#008000', '#FF0000']"
+    ></apx-chart>
+  </div>
 
 </div>
+
