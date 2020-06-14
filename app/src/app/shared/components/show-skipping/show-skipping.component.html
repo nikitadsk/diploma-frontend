@@ -1,0 +1,56 @@
+<div class="modal-header">
+  <h5 class="modal-title">Просмотр пропуска</h5>
+  <button type="button" class="close" (click)="modal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="skippingForm">
+    <label class="col-form-label" for="scheduleDate">Дата</label>
+    <input class="form-control"
+           style="margin-bottom: 20px;"
+           id="scheduleDate"
+           formControlName="date"
+    >
+    <ng-container formArrayName="skippings">
+      <ng-container *ngFor="let lesson of schedule.lessons; let i = index;">
+        <ng-container [formGroupName]="i">
+          <div class="row" style="margin-bottom: 10px;">
+            <div class="col">
+              <label class="col-form-label" for="discipline">Дисциплина</label>
+              <input class="form-control"
+                     id="discipline"
+                     [value]="lesson.disciplineName"
+                     disabled
+              >
+            </div>
+            <div class="col">
+              <label class="col-form-label" for="respectful">Уважительные пропуски</label>
+              <ngx-select-dropdown #respectfulDropdown
+                                   id="respectful"
+                                   formControlName="respectfulStudentObjects"
+                                   [options]="students"
+                                   [config]="studentConfig"
+                                   [multiple]="true"
+              ></ngx-select-dropdown>
+            </div>
+            <div class="col">
+              <label class="col-form-label" for="disrespectful">Неуважительные пропуски</label>
+              <ngx-select-dropdown #disrespectfulDropdown
+                                   id="disrespectful"
+                                   formControlName="disrespectfulStudentObjects"
+                                   [options]="students"
+                                   [config]="studentConfig"
+                                   [multiple]="true"
+              ></ngx-select-dropdown>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </form>
+</div>
+<div class="modal-footer">
+  <button *ngIf="authService.isDepartmentHead() && !readOnly" type="button" class="btn btn-primary" data-dismiss="modal" (click)="clickVerified()">Отметить</button>
+  <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="modal.dismiss()">Закрыть</button>
+</div>

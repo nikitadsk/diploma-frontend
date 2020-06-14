@@ -8,5 +8,7 @@ export interface IUser {
   teachersManagement?: boolean;
   studentsManagement?: boolean;
   skippingsManagement?: boolean;
+  isDepartmentHead?: boolean;
+  specialtyId?: string;
   token?: string;
 }

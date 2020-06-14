@@ -109,8 +109,7 @@
               <div class="list-group">
                 <button class="btn list-group-item list-group-item-action"
                         *ngFor="let schedule of noVerifiedSchedules"
-                        data-toggle="modal"
-                        data-target=""
+                        (click)="openVerificationSkippingModal(schedule)"
                 >{{ schedule.regionalDate }}</button>
               </div>
             </ng-container>
@@ -124,8 +123,7 @@
               <div class="list-group">
                 <button class="btn list-group-item list-group-item-action"
                         *ngFor="let schedule of verifiedSchedules"
-                        data-toggle="modal"
-                        data-target=""
+                        (click)="openShowSkippingModal(schedule)"
                 >{{ schedule.regionalDate }}</button>
               </div>
             </ng-container>

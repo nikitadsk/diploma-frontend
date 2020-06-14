@@ -62,4 +62,8 @@ export class AuthService {
     );
   }
 
+  public isDepartmentHead() {
+    return !!JSON.parse(localStorage.getItem('user')).isDepartmentHead;
+  }
+
 }

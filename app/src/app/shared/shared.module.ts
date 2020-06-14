@@ -5,11 +5,12 @@ import { DetailsPanelComponent } from './components/details-panel/details-panel.
 import { AddSkippingsComponent } from './components/add-skippings/add-skippings.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {SelectDropDownModule} from 'ngx-select-dropdown';
+import { ShowSkippingComponent } from './components/show-skipping/show-skipping.component';
 
 
 
 @NgModule({
-    declarations: [TableComponent, DetailsPanelComponent, AddSkippingsComponent],
+    declarations: [TableComponent, DetailsPanelComponent, AddSkippingsComponent, ShowSkippingComponent],
   exports: [
     TableComponent,
     DetailsPanelComponent

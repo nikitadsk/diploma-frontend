@@ -15,6 +15,8 @@ import {SelectDropDownComponent} from 'ngx-select-dropdown';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AddSkippingsComponent} from '../../shared/components/add-skippings/add-skippings.component';
 import {SkippingsService} from '../../services/skippings.service';
+import {AuthService} from '../../services/auth.service';
+import {ShowSkippingComponent} from '../../shared/components/show-skipping/show-skipping.component';
 
 @Component({
   selector: 'app-group-details',
@@ -111,6 +113,7 @@ export class GroupDetailsComponent implements OnInit, OnChanges {
     private skippingsService: SkippingsService,
     private fb: FormBuilder,
     private modal: NgbModal,
+    public authService: AuthService,
   ) { }
 
   getLessons() {
@@ -307,6 +310,34 @@ export class GroupDetailsComponent implements OnInit, OnChanges {
           });
         });
         const subscription = this.skippingsService.create(data).subscribe(() => {
+          this.ngOnChanges({});
+          subscription.unsubscribe();
+        });
+      })
+      .catch((err) => { console.log(err); });
+  }
+
+  openVerificationSkippingModal(schedule) {
+    const openedModal = this.modal.open(ShowSkippingComponent, { size: 'xl'});
+    openedModal.componentInstance.schedule = schedule;
+    openedModal.componentInstance.students = this.students;
+    openedModal.result
+      .then(() => {
+        const subscription = this.skippingsService.verification(schedule._id).subscribe(() => {
+          this.ngOnChanges({});
+          subscription.unsubscribe();
+        });
+      })
+      .catch((err) => { console.log(err); });
+  }
+  openShowSkippingModal(schedule) {
+    const openedModal = this.modal.open(ShowSkippingComponent, { size: 'xl'});
+    openedModal.componentInstance.schedule = schedule;
+    openedModal.componentInstance.students = this.students;
+    openedModal.componentInstance.readOnly = true;
+    openedModal.result
+      .then(() => {
+        const subscription = this.skippingsService.verification(schedule._id).subscribe(() => {
           this.ngOnChanges({});
           subscription.unsubscribe();
         });

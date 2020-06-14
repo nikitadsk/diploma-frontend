@@ -33,6 +33,11 @@ const routes: Routes = [
     loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule),
     canActivate: [CheckTokenGuard]
   },
+  {
+    path: 'statistic',
+    loadChildren: () => import('./statistic/statistic.module').then(m => m.StatisticModule),
+    canActivate: [CheckTokenGuard]
+  },
   { path: '**', redirectTo: 'home', pathMatch: 'full' }
 ];
 
