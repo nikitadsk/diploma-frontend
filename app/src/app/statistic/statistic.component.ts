@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {SchedulesService} from '../services/schedules.service';
 import {FormBuilder, Validators} from '@angular/forms';
 import {debounceTime, distinctUntilChanged, flatMap, map, toArray} from 'rxjs/operators';
@@ -18,6 +18,7 @@ import {
 } from 'ng-apexcharts';
 import {ISchedule} from '../models/schedule';
 import * as moment from 'moment';
+import * as xlsx from 'xlsx';
 
 export interface ChartOptions {
   series?: ApexAxisChartSeries;
@@ -38,6 +39,8 @@ export interface ChartOptions {
 })
 export class StatisticComponent implements OnInit {
   @ViewChild('chart') chart: ChartComponent;
+  @ViewChild('epltable', { static: false }) epltable: ElementRef;
+
   public chartOptions: Partial<ChartOptions> = {
     chart: {
       type: 'bar',
@@ -194,4 +197,10 @@ export class StatisticComponent implements OnInit {
       });
   }
 
+  exportToExcel() {
+    const ws: xlsx.WorkSheet = xlsx.utils.table_to_sheet(this.epltable.nativeElement);
+    const wb: xlsx.WorkBook = xlsx.utils.book_new();
+    xlsx.utils.book_append_sheet(wb, ws, 'Sheet1');
+    xlsx.writeFile(wb, 'ТАБЛИЧКА.xlsx');
+  }
 }

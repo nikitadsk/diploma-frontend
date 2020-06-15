@@ -36,7 +36,12 @@
       ></apx-chart>
     </div>
 
-    <table class="table table-bordered">
+    <button (click)="exportToExcel()"
+            class="btn btn-success"
+            style="height: 40px; width: 400px; margin-bottom: 20px"
+    >Экспортировать в Excel</button>
+
+    <table #epltable class="table table-bordered">
       <thead class="thead-dark">
       <tr>
         <th>ФИО</th>
