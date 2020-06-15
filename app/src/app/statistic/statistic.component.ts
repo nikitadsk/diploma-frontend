@@ -120,8 +120,8 @@ export class StatisticComponent implements OnInit {
       .subscribe(value => {
         if (this.searchForm.valid) {
           const subscription = this.schedulesService.getByGroupIdAndDates({
-            startDate: moment(value.startDate).format(),
-            endDate: moment(value.endDate).format(),
+            startDate: moment(value.startDate).format('YYYY-MM-DD') + 'T00:00:00+00:00',
+            endDate: moment(value.endDate).format('YYYY-MM-DD') + 'T00:00:00+00:00',
             groupId: value.group._id
           }).pipe(
             flatMap((schedules: ISchedule[]) => schedules),
