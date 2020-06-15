@@ -24,4 +24,5 @@ export interface ISchedule {
   respectfulSkippingsCount?: number;
   disrespectfulSkippingsCount?: number;
   allSkippingsCount?: number;
+  skippingsForStudents?: any;
 }

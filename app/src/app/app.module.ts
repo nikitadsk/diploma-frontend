@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,6 +13,10 @@ import {ToastrInterceptor} from './interceptors/toastr.interceptor';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {NgHttpLoaderModule} from 'ng-http-loader';
+import localeRu from '@angular/common/locales/ru';
+import {registerLocaleData} from '@angular/common';
+
+registerLocaleData(localeRu, 'ru');
 
 @NgModule({
   declarations: [
@@ -40,7 +44,8 @@ import {NgHttpLoaderModule} from 'ng-http-loader';
       provide: HTTP_INTERCEPTORS,
       useClass: ToastrInterceptor,
       multi: true
-    }
+    },
+    { provide: LOCALE_ID, useValue: 'ru' }
   ],
   bootstrap: [AppComponent]
 })

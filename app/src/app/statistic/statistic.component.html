@@ -21,19 +21,41 @@
     </div>
   </div>
 
-  <div id="chart" *ngIf="isVisible">
-    <apx-chart
-      [series]="chartOptions.series"
-      [chart]="chartOptions.chart"
-      [dataLabels]="chartOptions.dataLabels"
-      [plotOptions]="chartOptions.plotOptions"
-      [responsive]="chartOptions.responsive"
-      [xaxis]="chartOptions.xaxis"
-      [legend]="chartOptions.legend"
-      [fill]="chartOptions.fill"
-      [colors]="['#008000', '#FF0000']"
-    ></apx-chart>
-  </div>
+  <ng-container *ngIf="isVisible">
+    <div id="chart">
+      <apx-chart
+        [series]="chartOptions.series"
+        [chart]="chartOptions.chart"
+        [dataLabels]="chartOptions.dataLabels"
+        [plotOptions]="chartOptions.plotOptions"
+        [responsive]="chartOptions.responsive"
+        [xaxis]="chartOptions.xaxis"
+        [legend]="chartOptions.legend"
+        [fill]="chartOptions.fill"
+        [colors]="['#008000', '#FF0000']"
+      ></apx-chart>
+    </div>
+
+    <table class="table table-bordered">
+      <thead class="thead-dark">
+      <tr>
+        <th>ФИО</th>
+        <th *ngFor="let schedule of schedules">{{ schedule.date | date }}</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr *ngFor="let studentData of studentDataForTable">
+        <td>{{studentData.name}}</td>
+        <td *ngFor="let respectfulSkippingsCount of studentData.respectfulSkippingsCount; index as i">
+          У: {{ respectfulSkippingsCount }} |
+          Н: {{ studentData.disrespectfulSkippingsCount[i] }}
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </ng-container>
+
 
 </div>
 

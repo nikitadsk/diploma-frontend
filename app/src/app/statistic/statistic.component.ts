@@ -94,6 +94,9 @@ export class StatisticComponent implements OnInit {
   };
 
   groups: Observable<IGroup[]>;
+  schedules: ISchedule[];
+
+  studentDataForTable = [];
 
   isVisible = false;
 
@@ -138,6 +141,8 @@ export class StatisticComponent implements OnInit {
             }),
             toArray()
           ).subscribe((schedules: ISchedule[]) => {
+            this.studentDataForTable = [];
+            this.schedules = schedules;
             this.isVisible = false;
 
             const dataForChart = [{
@@ -156,7 +161,6 @@ export class StatisticComponent implements OnInit {
               categories.push(moment(schedule.date).format('DD-MM-YYYY'));
             });
 
-
             this.chartOptions = {
               ...this.chartOptions,
               series: [...dataForChart],
@@ -165,6 +169,22 @@ export class StatisticComponent implements OnInit {
                 categories
               }
             };
+
+            schedules.forEach(schedule => {
+              for (const name of Object.keys(schedule.skippingsForStudents)) {
+                if (!this.studentDataForTable.find(student => student.name === name)) {
+                  this.studentDataForTable.push({
+                    name,
+                    respectfulSkippingsCount: [],
+                    disrespectfulSkippingsCount: []
+                  });
+                }
+
+                const studentSkipping = this.studentDataForTable.find(student => student.name === name);
+                studentSkipping.respectfulSkippingsCount.push(schedule.skippingsForStudents[name].respectfulSkippingsCount);
+                studentSkipping.disrespectfulSkippingsCount.push(schedule.skippingsForStudents[name].disrespectfulSkippingsCount);
+              }
+            });
 
             this.isVisible = true;
 
