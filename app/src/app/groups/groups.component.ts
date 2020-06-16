@@ -10,6 +10,8 @@ import {TeachersService} from '../services/teachers.service';
 import {SpecialtyService} from '../services/specialty.service';
 import {DisciplinesService} from '../services/disciplines.service';
 import {DetailsPanelComponent} from '../shared/components/details-panel/details-panel.component';
+import {AuthService} from '../services/auth.service';
+import {toArray} from 'rxjs/operators';
 
 @Component({
   selector: 'app-groups',
@@ -83,11 +85,24 @@ export class GroupsComponent implements OnInit, AfterViewInit {
     private teachersService: TeachersService,
     private specialtyService: SpecialtyService,
     private disciplinesService: DisciplinesService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    public auth: AuthService
   ) { }
 
   ngOnInit() {
-    this.groups = this.groupsService.getAll();
+    if (this.auth.isAdmin() || this.auth.isDispatcher()) {
+      this.groups = this.groupsService.getAll();
+    }
+
+    if (this.auth.isDepartmentHead()) {
+      this.groups = this.groupsService.getBySpecialtyId(this.auth.getEditedSpecialty());
+    }
+
+    if (this.auth.isCurator() || this.auth.isHeadman()) {
+      this.groups = this.groupsService.getById(this.auth.getEditedGroup()).pipe(
+        toArray()
+      );
+    }
   }
 
   ngAfterViewInit(): void {

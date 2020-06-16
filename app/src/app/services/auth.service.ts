@@ -66,4 +66,28 @@ export class AuthService {
     return !!JSON.parse(localStorage.getItem('user')).isDepartmentHead;
   }
 
+  public isCurator() {
+    return !!JSON.parse(localStorage.getItem('user')).isCurator;
+  }
+
+  public isDispatcher() {
+    return !!JSON.parse(localStorage.getItem('user')).isDispatcher;
+  }
+
+  public isHeadman() {
+    return !!JSON.parse(localStorage.getItem('user')).isHeadman;
+  }
+
+  public isAdmin() {
+    return !!JSON.parse(localStorage.getItem('user')).isAdmin;
+  }
+
+  public getEditedSpecialty() {
+    return JSON.parse(localStorage.getItem('user')).editedSpecialty;
+  }
+
+  public getEditedGroup() {
+    return JSON.parse(localStorage.getItem('user')).editedGroup;
+  }
+
 }

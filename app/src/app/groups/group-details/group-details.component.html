@@ -6,7 +6,9 @@
          style="margin-left: 20px; font-size: 15px; cursor: pointer;"
          data-toggle="modal"
          data-target="#editGroupDialog"
-         (click)="clickEditGroup()"></i>
+         (click)="clickEditGroup()"
+         [hidden]="!auth.isCurator() && !auth.isAdmin()"
+      ></i>
     </h2>
     <ul ngbNav #nav="ngbNav" class="nav-tabs" style="margin-top: 20px;">
       <li [ngbNavItem]="1">
@@ -53,7 +55,9 @@
           <button class="btn btn-primary"
                   style="margin: 10px 0"
                   data-toggle="modal"
-                  data-target="#addStudent">
+                  data-target="#addStudent"
+                  [hidden]="!auth.isCurator() && !auth.isAdmin()"
+          >
             <span>Добавить <i class="fa fa-plus"></i></span>
           </button>
           <app-table [contents]="toObservable(students)" [contentFields]="studentContentFields" [headerNames]="studentsHeaderNames"></app-table>
@@ -68,6 +72,7 @@
                     data-toggle="modal"
                     data-target="#addScheduleDialog"
                     (click)="openAddSchedule()"
+                    [hidden]="!auth.isDispatcher()"
             >
               <span>Добавить <i class="fa fa-plus"></i></span>
             </button>

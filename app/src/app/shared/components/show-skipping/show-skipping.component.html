@@ -51,6 +51,9 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button *ngIf="authService.isDepartmentHead() && !readOnly" type="button" class="btn btn-primary" data-dismiss="modal" (click)="clickVerified()">Отметить</button>
+  <button *ngIf="authService.isDepartmentHead() && !readOnly"
+          type="button" class="btn btn-primary"
+          data-dismiss="modal" (click)="clickVerified()"
+  >Отметить</button>
   <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="modal.dismiss()">Закрыть</button>
 </div>

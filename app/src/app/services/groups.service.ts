@@ -27,6 +27,10 @@ export class GroupsService {
     return this.http.get(this.url + '/by-curator-id/' + curatorId) as Observable<IGroup>;
   }
 
+  public getBySpecialtyId(specialtyId: string): Observable<IGroup[]> {
+    return this.http.get(this.url + '/by-specialty-id/' + specialtyId) as Observable<IGroup[]>;
+  }
+
   public create(group: IGroup) {
     return this.http.post(this.url, group);
   }

@@ -113,7 +113,7 @@ export class GroupDetailsComponent implements OnInit, OnChanges {
     private skippingsService: SkippingsService,
     private fb: FormBuilder,
     private modal: NgbModal,
-    public authService: AuthService,
+    public auth: AuthService,
   ) { }
 
   getLessons() {

@@ -5,6 +5,7 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {IStudent} from '../../../models/student';
 import {SelectDropDownComponent} from 'ngx-select-dropdown';
 import {ToastrService} from 'ngx-toastr';
+import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'app-add-skippings',
@@ -37,7 +38,8 @@ export class AddSkippingsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private toasterService: ToastrService,
-    public modal: NgbActiveModal
+    public modal: NgbActiveModal,
+    public auth: AuthService
   ) { }
 
   ngOnInit(): void {
